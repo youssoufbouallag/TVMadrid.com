@@ -8,17 +8,13 @@
     <style>
         :root { --madrid-blue: #001c58; --madrid-gold: #febe10; --bg: #0a0e27; --card: #161b3d; }
         body { font-family: sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; }
-        
-        /* مشغل الفيديو المثبت */
         #player-wrapper { position: sticky; top: 0; z-index: 100; background: #000; width: 100%; aspect-ratio: 16/9; border-bottom: 2px solid var(--madrid-gold); display: none; }
         video { width: 100%; height: 100%; }
         .container { padding: 15px; max-width: 600px; margin: auto; }
         .header { text-align: center; padding: 15px; background: var(--madrid-blue); color: white; font-weight: bold; }
-        
         .search-box { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #2d3a4f; background: var(--card); color: white; margin-bottom: 15px; outline: none; box-sizing: border-box; }
         .match-card { background: var(--card); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid transparent; cursor: pointer; transition: 0.3s; }
         .match-card:hover { border-color: var(--madrid-gold); }
-        
         .match-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--madrid-gold); margin-bottom: 10px; }
         .teams { display: flex; justify-content: space-around; align-items: center; text-align: center; }
         .team img { width: 45px; height: 45px; object-fit: contain; }
@@ -27,31 +23,36 @@
     </style>
 </head>
 <body>
+
 <div id="player-wrapper">
     <video id="video" controls autoplay></video>
 </div>
-<div class="header">TVMADRID.COM - مركز التأسيس</div>
+
+<div class="header">TVMADRID.COM - مركز البث المباشر</div>
+
 <div class="container">
-    <input type = "text" class = "search-box" id = "matchSearch" placeholder = "ابحث عن تطابق أو قناة...">
+    <input type="text" class="search-box" id="matchSearch" placeholder="ابحث عن مباراة أو قناة...">
+
     <div class="match-card" onclick="startPlay('https://static.france24.com/live/F24_AR_LO_HLS/live_tv.m3u8')">
         <div class="match-info">
-            <span>قناة تريدية (تجربة)</span>
+            <span>بث تجريبي</span>
             <span style="color: #22c55e;">● مباشر الآن</span>
         </div>
         <div class="teams">
             <div class="team">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/France_24_logo_ar.png" alt="اختبار">
-                <div>الربعس 24</div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/France_24_logo_ar.png" alt="فرنسا 24">
+                <div>فرنسا 24</div>
             </div>
-            <div class="vs">مباشر</div>
+            <div class="vs">بث</div>
             <div class="team">
-                <img src="https://logodownload.org/wp-content/uploads/2016/03/real-madrid-logo-0.png" alt="مدريد">
+                <img src="https://logodownload.org/wp-content/uploads/2016/03/real-madrid-logo-0.png" alt="TVMadrid">
                 <div>TVMadrid</div>
             </div>
         </div>
-        <button class="live-btn">اضغط بث مباشر</button>
+        <button class="live-btn">اضغط لمشاهدة البث</button>
     </div>
-    <div class="match-card" onclick="alert('هذه العملية لم تبدأ بعد، حيث تم وضع الرابط قبل الانطلاق بـ 15 دقيقة')">
+
+    <div class="match-card" onclick="alert('سيبدأ البث قبل المباراة بـ 15 دقيقة')">
         <div class="match-info">
             <span>الدوري الإسباني</span>
             <span style="color: #94a3b8;">اليوم - 21:00</span>
@@ -64,29 +65,33 @@
             <div class="vs">مقابل</div>
             <div class="team">
                 <img src="https://logodownload.org/wp-content/uploads/2016/03/barcelona-logo-0.png" alt="برشلونة">
-                <div>برشلانة</div>
+                <div>برشلونة</div>
             </div>
         </div>
-        <p style="text-align: center;font-size: 11px; color: #64748b; Margin-top: 10px;">انتظر عملية تفعيل البث</p>
+        <p style="text-align: center; font-size: 11px; color: #64748b; margin-top: 10px;">انتظر تفعيل البث المباشر</p>
     </div>
 </div>
+
 <script>
-    دالة بدء التشغيل (عنوان URL) {
+    function startPlay(url) {
         const video = document.getElementById('video');
         const wrapper = document.getElementById('player-wrapper');
         wrapper.style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        إذا كان (Hls.isSupported()) {
+
+        if (Hls.isSupported()) {
             const hls = new Hls();
             hls.loadSource(url);
             hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = url;
             video.play();
         }
     }
-    // علم
+
     document.getElementById('matchSearch').addEventListener('keyup', function() {
         let filter = this.value.toLowerCase();
         let cards = document.querySelectorAll('.match-card');
@@ -95,5 +100,6 @@
         });
     });
 </script>
+
 </body>
 </html>
