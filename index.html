@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -90,16 +90,3 @@
             video.src = url;
             video.play();
         }
-    }
-
-    document.getElementById('matchSearch').addEventListener('keyup', function() {
-        let filter = this.value.toLowerCase();
-        let cards = document.querySelectorAll('.match-card');
-        cards.forEach(card => {
-            card.style.display = card.innerText.toLowerCase().includes(filter) ? "block" : "none";
-        });
-    });
-</script>
-
-</body>
-</html>
